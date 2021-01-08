@@ -91,7 +91,7 @@ CC        = gcc
 #
 #
 #A minimal one
-CFLAGS = 
+CFLAGS = -O2
 #
 # A basic one for debugging
 #CFLAGS  = -g 
@@ -140,41 +140,7 @@ DLIBS  = $(LIBS)
 # draw programs are listed last since they are the most likely to cause
 # compilation or linking problems
 
-PROGS   =		clique \
-				consense \
-				contml \
-				contrast \
-				dnacomp \
-				dnadist \
-				dnainvar \
-				dnaml \
-				dnamlk \
-				dnamove \
-				dnapars \
-				dnapenny \
-				dolmove \
-				dollop \
-				dolpenny \
-				factor \
-				fitch \
-				gendist \
-				kitsch \
-				mix \
-				move \
-				neighbor \
-				pars \
-				penny \
-				proml \
-				promlk \
-				protdist \
-				protpars \
-				restdist \
-				restml \
-				retree \
-				seqboot \
-				treedist \
-        		drawgram \
-				drawtree 
+PROGS   =		neighbor
 							
 DYLIBS  =       libdrawgram.so \
 		        libdrawtree.so

@@ -143,9 +143,6 @@ void init(int argc, char** argv)
   ansi = ANSICRT;
   javarun = false;
 
-  /* Clear the screen */
-  cleerhome();
-
 #ifdef WIN32
   /* Perform DOS console configuration */
   phySetConsoleAttributes();
@@ -286,88 +283,16 @@ void openfile(FILE **fp,const char *filename,const char *filedesc,
 
   strcpy(file, filename);
   strcpy(filemode, mode);
-  loopcount = 0;
-  while (1){
-#if ! OVERWRITE_FILES
-    if (filemode[0] == 'w' && filexists(file)){
-      printf("\n%s: the file \"%s\" that you wanted to\n",
-          progname_without_path, file);
-      printf("     use as %s already exists.\n", filedesc);
-      printf("     Do you want to Replace it, Append to it,\n");
-      printf("     write to a new File, or Quit?\n");
-      loopcount2 = 0;
-      do {
-        printf("     (please type R, A, F, or Q) \n");
-#ifdef WIN32
-        phyFillScreenColor();
-#endif
-        fflush(stdout);
-        if ( fgets(input, sizeof(input), stdin) == NULL )
-          EOF_error();
-        ch  = input[0];
-        uppercase(&ch);
-        countup(&loopcount2, 10);
-      } while (ch != 'A' && ch != 'R' && ch != 'F' && ch != 'Q');
-      if (ch == 'Q')
-        exxit(-1);
-      if (ch == 'A') {
-        strcpy(filemode,"a");
-        continue;
-      }
-      else if (ch == 'F') {
-        file[0] = '\0';
-        loopcount2 = 0;
-        while (file[0] =='\0') {
-          printf("Please enter a new file name> ");
-          fflush(stdout);
-          getstryng(file);
-          countup(&loopcount2, 10);
-        }
-        strcpy(filemode,"w");
-        continue;
-      }
-    }
-#endif /* ! OVERWRITE_FILES */
+
     of = fopen(file,filemode);
-    if (of)
-      break;
-    else {
-      switch (filemode[0]){
-
-      case 'r':
-        printf("%s: can't find %s \"%s\"\n", progname_without_path,
-            filedesc, file);
-        file[0] = '\0';
-        loopcount2 = 0;
-        while ( file[0] =='\0' ) {
-          printf("Please enter a new file name> ");
-          fflush(stdout);
-          countup(&loopcount2, 10);
-          getstryng(file);
-        }
-        break;
-
-      case 'w':
-      case 'a':
-        printf("%s: can't write %s \"%s\"\n", progname_without_path,
-            filedesc, file);
-        file[0] = '\0';
-        loopcount2 = 0;
-        while (file[0] =='\0') {
-          printf("Please enter a new file name> ");
-          fflush(stdout);
-          countup(&loopcount2, 10);
-          getstryng(file);
-        }
-        continue;
-
-      default:
-     printf("There is some error in the call of openfile. Unknown mode.\n");
-        exxit(-1);
-      }
+    if (of){
     }
-    countup(&loopcount, 20);
-  }
+    else {
+        printf("There is some error in the call of openfile. Unknown mode.\n");
+        printf("Check that the correct file names have been specified.\n");
+        exxit(-1);
+    }
+
   *fp = of;
   if (perm != NULL)
     strcpy(perm,file);

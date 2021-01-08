@@ -70,7 +70,7 @@ void getoptions()
 {
   /* interactively set options */
   long inseed0 = 0, loopcount;
-  Char ch;
+  Char ch = 'Y';
 
   fprintf(outfile, "\nNeighbor-Joining/UPGMA method version %s\n\n",VERSION);
   putchar('\n');
@@ -86,7 +86,10 @@ void getoptions()
   treeprint = true;
   njoin = true;
   loopcount = 0;
+
   for(;;) {
+    //   Just use the default settings
+#ifdef False
     cleerhome();
     printf("\nNeighbor-Joining/UPGMA method version %s\n\n",VERSION);
     printf("Settings for this run:\n");
@@ -135,6 +138,7 @@ void getoptions()
     if (ch == '\n')
       ch = ' ';
     uppercase(&ch);
+#endif
     if  (ch == 'Y')
       break;
     if (strchr("NJOULRSM01234",ch) != NULL){
@@ -580,20 +584,31 @@ void maketree()
 
 int main(int argc, Char *argv[])
 {  /* main program */
+    // Example: ./neighbor ./test/sample.txt ./test/sample_outtree.txt ./test/sample_outfile.txt
 #ifdef MAC
   argc = 1;                /* macsetup("Neighbor","");                */
   argv[0] = "Neighbor";
 #endif
   init(argc, argv);
-  openfile(&infile,INFILE,"input file", "r",argv[0],infilename);
-  openfile(&outfile,OUTFILE,"output file", "w",argv[0],outfilename);
+
+    if (argc != 4) {
+        fprintf(stderr, "Incorrect number of arguments specified:\n");
+        fprintf(stderr, "USEAGE: %s [dist_matrix_path] [outtree_path] [outfile_path]\n", __FILE__);
+    }
+
+    char *infile_path = argv[1];
+    char *outfile_path = argv[2];
+    char *outtree_path = argv[3];
+
+  openfile(&infile,infile_path,"input file", "r",argv[0],infilename);
+  openfile(&outfile,outfile_path,"output file", "w",argv[0],outfilename);
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   mulsets = false;
   datasets = 1;
   doinit();
   if (trout)
-    openfile(&outtree,OUTTREE,"output tree file", "w",argv[0],outtreename);
+    openfile(&outtree,outtree_path,"output tree file", "w",argv[0],outtreename);
   ith = 1;
   while (ith <= datasets) {
     if (datasets > 1) {
@@ -620,6 +635,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+
   return 0;
 }
 
