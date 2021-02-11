@@ -119,7 +119,7 @@ void init(int argc, char** argv)
    * anything done at the beginning for every program should be done here */ 
  
   /* set up signal handler for 
-   * segfault, floating point exception, illeagal instruction, bad pipe, bus error
+   * segfault, floating point exception, illegal instruction, bad pipe, bus error
    * there are more signals that can cause a crash, but these are the most common
    * even these aren't found on all machines.  */
 #ifdef SIGSEGV

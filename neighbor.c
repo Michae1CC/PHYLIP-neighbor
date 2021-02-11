@@ -1,6 +1,6 @@
 /* version 3.696.
    Written by Mary Kuhner, Jon Yamato, Joseph Felsenstein, Akiko Fuseki,
-   Sean Lamont, and Andrew Keeffe.
+   Sean Lamont, Andrew Keeffe and Michael Ciccotosto-Camp.
 
    Copyright (c) 1993-2014, Joseph Felsenstein
    All rights reserved.
